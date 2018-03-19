@@ -35,6 +35,8 @@ public class QuizActivity extends AppCompatActivity {
     private int score = 0; // Score for the final scoring after a count of six questions
 
 
+
+
     //A2 Modifications
     private static final String TAG = "QuizActivity"; //Corresponding TAG to check the logs in the Logcat window
     private static final String KEY_INDEX = "index";
@@ -172,6 +174,7 @@ public class QuizActivity extends AppCompatActivity {
         super.onSaveInstanceState(savedInstanceState);
         Log.i(TAG, "onSaveInstanceState");
         savedInstanceState.putInt(KEY_INDEX, mCurrentIndex);
+        savedInstanceState.putBoolean("Did Cheat",mIsCheater);
     }
     @Override
     public void onStop() {
@@ -196,19 +199,21 @@ public class QuizActivity extends AppCompatActivity {
 
     private void checkAnswer(boolean userPressedTrue) {
         boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
+
         int messageResId = 0;
+
         if (mIsCheater) {
             messageResId = R.string.judgment_toast;
         } else {
             if (userPressedTrue == answerIsTrue) {
                 messageResId = R.string.correct_toast;
-                score++;
             } else {
                 messageResId = R.string.incorrect_toast;
             }
-            Toast.makeText(this, messageResId, Toast.LENGTH_SHORT)
-                    .show();
         }
+
+        Toast.makeText(this, messageResId, Toast.LENGTH_SHORT)
+                .show();
 
 
         if(updateCounter == 6)
